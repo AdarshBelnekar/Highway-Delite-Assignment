@@ -40,13 +40,13 @@ const AuthForm = () => {
           return;
         }
 
-        await axios.post('http://localhost:5000/api/auth/send-otp', {
+        await axios.post('https://highway-delite-assignment-fn44.onrender.com/api/auth/send-otp', {
           name: form.name,
           email: form.email,
           dob: form.dob,
         });
       } else {
-        await axios.post('http://localhost:5000/api/auth/verify-otp', {
+        await axios.post('https://highway-delite-assignment-fn44.onrender.com/api/auth/verify-otp', {
           email: form.email,
         });
       }
@@ -60,7 +60,7 @@ const AuthForm = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/verify-otp', {
+      const res = await axios.post('https://highway-delite-assignment-fn44.onrender.com/api/auth/verify-otp', {
         email: form.email,
         otp: form.otp,
       });
@@ -87,7 +87,7 @@ const AuthForm = () => {
       return;
     }
 
-    await axios.post('http://localhost:5000/api/auth/resend-otp', {
+    await axios.post('https://highway-delite-assignment-fn44.onrender.com/api/auth/resend-otp', {
       email: form.email,
     });
 
