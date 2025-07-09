@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
   const [mode, setMode] = useState<'signup' | 'signin'>('signup');
@@ -13,12 +14,12 @@ const AuthForm = () => {
   const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
- 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      window.location.href = '/welcome';
+      navigate("/welcome")
     }
   }, []);
 
@@ -73,7 +74,7 @@ const AuthForm = () => {
         localStorage.setItem('rememberMe', 'true');
       }
 
-      window.location.href = '/welcome';
+      navigate('/welcome');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Authentication failed');
     }
