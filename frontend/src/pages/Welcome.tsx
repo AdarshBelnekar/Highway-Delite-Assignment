@@ -32,7 +32,7 @@ const Welcome = () => {
 
   const fetchNotes = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/notes', {
+      const res = await axios.get('https://highway-delite-assignment-fn44.onrender.com/api/notes', {
         headers: {
           token: token || '',
         },
@@ -50,7 +50,7 @@ const Welcome = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/notes/${id}`, {
+      await axios.delete(`https://highway-delite-assignment-fn44.onrender.com/api/notes/${id}`, {
         headers: {
           token: token || '',
         },
