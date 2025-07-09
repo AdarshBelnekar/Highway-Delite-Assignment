@@ -36,20 +36,46 @@ export const verifyOtp = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, otp } = req.body;
 
+    // 1. Validate input
+    if (!email || !otp) {
+      res.status(400).json({ message: 'Email and OTP are required' });
+      return;
+    }
+
+    // 2. Find user by email
     const user = await User.findOne({ email });
-    if (!user || user.otp !== otp) {
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    // 3. Check if OTP matches
+    if (user.otp !== otp) {
       res.status(400).json({ message: 'Invalid OTP' });
       return;
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || '', {
-      expiresIn: '1d',
-    });
+    // 4. Generate JWT token
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET || 'defaultsecret',
+      { expiresIn: '1d' }
+    );
 
-    res.status(200).json({ token, name: user.name, email: user.email });
+    // 5. Optionally clear OTP after successful login
+    user.otp = '';
+    await user.save();
+
+    // 6. Send response
+    res.status(200).json({
+      token,
+      name: user.name,
+      email: user.email,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Verification failed' });
+    console.error('OTP verification error:', error);
+    res.status(500).json({ message: 'OTP verification failed' });
   }
 };
 
